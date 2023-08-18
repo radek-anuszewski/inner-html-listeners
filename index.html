@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>innerHTML breaks listeners</title>
+  <style>
+    body {
+      padding: 48px;
+      max-width: 360px;
+    }
+  </style>
+  <script type="module">
+    const paragraph = document.querySelector("#paragraph");
+    const inner = document.querySelector("#innerHTML");
+    const append = document.querySelector("#appendChild");
+    const alertEl = document.querySelector("#alert");
+    let i = 1;
+
+    inner.addEventListener("click", () => {
+      paragraph.innerHTML += `<div>Some content ${i}</div>`;
+      i++;
+    });
+
+    append.addEventListener("click", () => {
+      const p = document.createElement("div");
+      p.innerHTML = `Some content ${i}`;
+      paragraph.appendChild(p);
+      i++;
+    });
+
+    alertEl.addEventListener("click", () => {
+      alert("Alert clicked");
+    });
+  </script>
+</head>
+<body>
+<main>
+  <article>
+    <h1>innerHTML breaks listeners</h1>
+    <section>
+      innerHTML will break listeners. Because content is completely rerendered, new HTML elements are not the same as that which had listeners attached.
+      <br>
+      <a href="https://github.com/radek-anuszewski/inner-html-listeners" target="_blank" rel="noopener noreferrer">Check code on Github</a>
+      <br>
+      <br>
+      Do this:
+      <ol>
+        <li>Click "alert" button</li>
+        <li>Click "appendChild" button</li>
+        <li>Click "alert" again, notice everything works</li>
+        <li>Click "innerHTML" button</li>
+        <li>Notice "alert" not working</li>
+      </ol>
+    </section>
+    <br><br>
+    <button id="innerHTML">Add content via innerHTML</button>
+    <br><br>
+    <button id="appendChild">Add content via appendChild</button>
+    <section id="paragraph">
+      <h2>I am a paragraph</h2>
+      <button id="alert">Alert!</button>
+      <p>I have some content</p>
+    </section>
+  </article>
+</main>
+</body>
+</html>
